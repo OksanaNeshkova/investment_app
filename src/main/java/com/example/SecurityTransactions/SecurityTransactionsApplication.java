@@ -8,6 +8,8 @@ public class SecurityTransactionsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityTransactionsApplication.class, args);
+
+
 	}
 
 }
