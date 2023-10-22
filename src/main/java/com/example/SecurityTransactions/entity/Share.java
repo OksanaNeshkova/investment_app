@@ -35,8 +35,6 @@ public class Share {
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> stockTransactions = new ArrayList<>();
 
-    @Column(name="password", nullable = false)
-    private String password;
 
     public Share(String companyName, String shareName, String isin, String country, String economicField) {
         this.companyName = companyName;

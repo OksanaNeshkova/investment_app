@@ -47,9 +47,10 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Transaction> transaction = new ArrayList<>();
 
-    public Employee(String firstName, String lastName, long personalCode, String email, String address, String phone, Role role) {
+    public Employee(String firstName, String lastName, String password, long personalCode, String email, String address, String phone, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
         this.personalCode = personalCode;
         this.email = email;
         this.address = address;
