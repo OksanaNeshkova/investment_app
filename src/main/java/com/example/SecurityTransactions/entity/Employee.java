@@ -40,7 +40,7 @@ public class Employee {
     @Column(name="phone_number", nullable = false)
     private String phone;
 
-    @Enumerated
+    @Enumerated (EnumType.STRING)
      private Role role;
 
 
