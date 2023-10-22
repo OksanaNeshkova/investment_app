@@ -41,13 +41,18 @@ public class Transaction {
     @Column(name="trade_date")
     private final Date date = new Date();
 
-    public Transaction(TransactionType type, Share share, long volume, float price, float fx, String currency) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    public Transaction(TransactionType type, Share share, long volume, float price, float fx, String currency, Employee employee) {
         this.type = type;
         this.share = share;
         this.volume = volume;
         this.price = price;
         this.fx = fx;
         this.currency = currency;
+        this.employee = employee;
     }
 }
 
