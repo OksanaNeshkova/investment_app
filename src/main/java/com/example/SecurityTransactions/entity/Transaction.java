@@ -1,20 +1,19 @@
 package com.example.SecurityTransactions.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Transaction {
-
+public class Transaction{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
@@ -23,8 +22,10 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
+    @JsonBackReference("share")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id")
+
     private Share share;
 
     @Column(name="trading_volume", nullable = false)
@@ -39,20 +40,22 @@ public class Transaction {
     private String currency;
 
     @Column(name="trade_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private final Date date = new Date();
 
+    @JsonBackReference ("employee")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
+
     private Employee employee;
 
-    public Transaction(TransactionType type, Share share, long volume, float price, float fx, String currency, Employee employee) {
+    public Transaction(TransactionType type, long volume, float price, float fx, String currency) {
         this.type = type;
-        this.share = share;
         this.volume = volume;
         this.price = price;
         this.fx = fx;
         this.currency = currency;
-        this.employee = employee;
+
     }
 }
 

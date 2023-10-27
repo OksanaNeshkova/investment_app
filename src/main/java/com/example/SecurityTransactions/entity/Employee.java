@@ -1,18 +1,17 @@
 package com.example.SecurityTransactions.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table
-@Setter
-@Getter
-@ToString
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {
@@ -34,6 +33,7 @@ public class Employee {
     private long personalCode;
 
     @Email
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(name="address", nullable = false)
     private String address;
@@ -43,18 +43,10 @@ public class Employee {
     @Enumerated (EnumType.STRING)
      private Role role;
 
-
+    @JsonManagedReference("employee")
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Transaction> transaction = new ArrayList<>();
 
-    public Employee(String firstName, String lastName, String password, long personalCode, String email, String address, String phone, Role role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.personalCode = personalCode;
-        this.email = email;
-        this.address = address;
-        this.phone = phone;
-        this.role = role;
-    }
+
+
 }

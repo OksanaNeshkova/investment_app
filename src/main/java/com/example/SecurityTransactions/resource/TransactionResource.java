@@ -1,10 +1,10 @@
 package com.example.SecurityTransactions.resource;
 
 
-import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.Transaction;
-import com.example.SecurityTransactions.service.ShareService;
 import com.example.SecurityTransactions.service.TransactionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,17 +14,38 @@ import java.util.List;
 public class TransactionResource {
     private final TransactionService transactionService;
 
-    public TransactionResource (TransactionService transactionService){
+    public TransactionResource(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
+
     @GetMapping("/all")
-    public List<Transaction> getAllTransaction() {
-        return transactionService.findAllTransactions();
+    public ResponseEntity<List<Transaction>> getAllTransactions() {
+        List<Transaction> transactions = transactionService.findAllTransactions();
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public void addTransaction(@RequestBody Transaction transaction){
-        transactionService.addTransaction(transaction);
+    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction, @RequestParam Long empId, @RequestParam Long secId) {
+        Transaction addedTransaction = transactionService.addTransaction(transaction, empId, secId);
+        return new ResponseEntity<>(addedTransaction, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction transaction) {
+        Transaction updatedTransaction = transactionService.updateTransaction(transaction);
+        return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Long id) {
+        Transaction foundTransaction = transactionService.findTransactionById(id);
+        return new ResponseEntity<>(foundTransaction, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteTransactionById(@PathVariable("id") Long id) {
+        transactionService.deleteTransaction(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

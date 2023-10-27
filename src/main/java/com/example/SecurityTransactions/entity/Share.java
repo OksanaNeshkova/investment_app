@@ -1,8 +1,8 @@
 package com.example.SecurityTransactions.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +32,9 @@ public class Share {
     @Column(name="economic_field", nullable = false)
     private String economicField;
 
+    @JsonManagedReference("share")
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> stockTransactions = new ArrayList<>();
-
-
     public Share(String companyName, String shareName, String isin, String country, String economicField) {
         this.companyName = companyName;
         this.shareName = shareName;
