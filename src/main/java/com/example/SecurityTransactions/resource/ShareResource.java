@@ -25,4 +25,11 @@ public class ShareResource {
     public void addShare(@RequestBody Share share){
         shareService.addShare(share);
     }
+
+    @PutMapping("/update")
+    public Share updateShare(@RequestBody Share theShare){
+        Share updatedShare = shareService.updateShare(theShare);
+        return updatedShare;
+    }
+
 }

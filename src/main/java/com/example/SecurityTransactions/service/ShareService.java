@@ -25,4 +25,11 @@ public class ShareService {
     public Share addShare(Share share){
         return shareRepository.save(share);
     }
+
+    public Share updateShare(Share share) {
+        return shareRepository.save(share);
+    }
+
+
+
 }
