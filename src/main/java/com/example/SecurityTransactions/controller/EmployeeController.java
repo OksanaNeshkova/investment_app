@@ -2,6 +2,9 @@ package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +20,35 @@ public class EmployeeController {
     }
 
     @GetMapping("/all")
-    public List<Employee> getAllEmployees() {
-        return employeeService.findAllEmployees();
+    public ResponseEntity<List<Employee>>  getAllEmployees() {
+        List<Employee> employees = employeeService.findAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+
     @PostMapping("/add")
-    public void addEmployee(@RequestBody Employee employee) {
-        employeeService.addEmployee(employee);
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
+        Employee newEmployee = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+    }
+
+
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id")Long id){
+        Employee employee = employeeService.findEmployeeById(id);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id")Long id){
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

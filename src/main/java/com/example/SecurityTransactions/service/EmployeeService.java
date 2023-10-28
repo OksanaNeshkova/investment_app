@@ -1,6 +1,7 @@
 package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,18 @@ public class EmployeeService {
     public Employee addEmployee(Employee employee) {
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeRepository.save(employee);
+    }
+
+    public Employee findEmployeeById(Long id){
+        return employeeRepository.findEmployeeById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee by ID " + id + " was not found."));
+    }
+
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
     }
 }
