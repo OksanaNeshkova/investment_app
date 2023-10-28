@@ -1,5 +1,6 @@
 package com.example.SecurityTransactions.dto;
 
+import com.example.SecurityTransactions.entity.Role;
 import lombok.Data;
 
 @Data
@@ -13,5 +14,7 @@ public class RegisterDto {
     private long personalCode;
     private String address;
     private String phone;
+    Role role;
+
 
 }

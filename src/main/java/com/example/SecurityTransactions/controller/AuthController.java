@@ -45,7 +45,7 @@ public class AuthController {
         employee.setEmail(registerDto.getEmail());
         employee.setAddress(registerDto.getAddress());
         employee.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        employee.setRole(Role.USER);
+        employee.setRole(registerDto.getRole());
 
         employeeRepository.save(employee);
         return new ResponseEntity<>("New employee registered successfully", HttpStatus.OK);
