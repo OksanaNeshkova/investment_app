@@ -1,8 +1,6 @@
-package com.example.SecurityTransactions.resource;
+package com.example.SecurityTransactions.controller;
 
-import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Share;
-import com.example.SecurityTransactions.service.EmployeeService;
 import com.example.SecurityTransactions.service.ShareService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,24 +8,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/share")
-public class ShareResource {
+public class ShareController {
     private final ShareService shareService;
 
-    public ShareResource (ShareService shareService){
+    public ShareController(ShareService shareService) {
         this.shareService = shareService;
     }
+
     @GetMapping("/all")
     public List<Share> getAllShares() {
         return shareService.findAllShare();
     }
 
     @PostMapping("/add")
-    public void addShare(@RequestBody Share share){
+    public void addShare(@RequestBody Share share) {
         shareService.addShare(share);
     }
 
     @PutMapping("/update")
-    public Share updateShare(@RequestBody Share theShare){
+    public Share updateShare(@RequestBody Share theShare) {
         Share updatedShare = shareService.updateShare(theShare);
         return updatedShare;
     }

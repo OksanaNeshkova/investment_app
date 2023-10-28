@@ -50,7 +50,7 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public long shareBalance (Long secId) {
+    public long shareBalance(Long secId) {
         long shareBalance = 0;
         List<Transaction> transactions = shareRepository.findById(secId).get().getStockTransactions();
         for (int i = 0; i < transactions.size(); i++) {
@@ -68,16 +68,16 @@ public class TransactionService {
         Employee employee = findTransactionById(transaction.getId()).getEmployee();
         Transaction foundTransaction = findTransactionById(transaction.getId());
         long currentBalance = shareBalance(share.getId());
-        if(foundTransaction.getType()==TransactionType.PURCHASE&&transaction.getType()==TransactionType.PURCHASE){
-            currentBalance=currentBalance+(transaction.getVolume()-foundTransaction.getVolume());
-        } else if (foundTransaction.getType()==TransactionType.PURCHASE&&transaction.getType()==TransactionType.SALE) {
-            currentBalance = currentBalance-(foundTransaction.getVolume()+transaction.getVolume());
-        } else if (foundTransaction.getType()==TransactionType.SALE&&transaction.getType()==TransactionType.PURCHASE){
-            currentBalance = currentBalance+foundTransaction.getVolume()+transaction.getVolume();
-        } else if (foundTransaction.getType()==TransactionType.SALE &&transaction.getType()==TransactionType.SALE) {
-            currentBalance=currentBalance-(transaction.getVolume()-foundTransaction.getVolume());
+        if (foundTransaction.getType() == TransactionType.PURCHASE && transaction.getType() == TransactionType.PURCHASE) {
+            currentBalance = currentBalance + (transaction.getVolume() - foundTransaction.getVolume());
+        } else if (foundTransaction.getType() == TransactionType.PURCHASE && transaction.getType() == TransactionType.SALE) {
+            currentBalance = currentBalance - (foundTransaction.getVolume() + transaction.getVolume());
+        } else if (foundTransaction.getType() == TransactionType.SALE && transaction.getType() == TransactionType.PURCHASE) {
+            currentBalance = currentBalance + foundTransaction.getVolume() + transaction.getVolume();
+        } else if (foundTransaction.getType() == TransactionType.SALE && transaction.getType() == TransactionType.SALE) {
+            currentBalance = currentBalance - (transaction.getVolume() - foundTransaction.getVolume());
         }
-        if (currentBalance<0){
+        if (currentBalance < 0) {
             throw new ShortSellingNotAllowedException("Updating of current transaction failed/ Short-selling is not allowed");
         }
         transaction.setShare(share);
@@ -90,14 +90,13 @@ public class TransactionService {
     }
 
     public void deleteTransaction(Long transactionId) {
-//        Transaction foundTransaction = findTransactionById(transactionId);
-//        if (foundTransaction.getType()==TransactionType.PURCHASE) {
-//            transactionRepository.deleteById(transactionId);
-//            long currentBalance = shareBalance(foundTransaction.getShare().getId());
-//            if (currentBalance - foundTransaction.getVolume() < 0) {
-//                throw new ShortSellingNotAllowedException("Deleting the current transaction will result in Short-selling");
-//            }
-//        }
+        Transaction foundTransaction = findTransactionById(transactionId);
+        if (foundTransaction.getType() == TransactionType.PURCHASE) {
+            long currentBalance = shareBalance(foundTransaction.getShare().getId()) - foundTransaction.getVolume();
+            if (currentBalance < 0) {
+                throw new ShortSellingNotAllowedException("Deleting the current transaction will result in Short-selling");
+            }
+        }
         transactionRepository.deleteById(transactionId);
     }
 }

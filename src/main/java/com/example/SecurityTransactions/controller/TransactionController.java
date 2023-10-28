@@ -1,4 +1,4 @@
-package com.example.SecurityTransactions.resource;
+package com.example.SecurityTransactions.controller;
 
 
 import com.example.SecurityTransactions.entity.Transaction;
@@ -11,10 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
-public class TransactionResource {
+public class TransactionController {
     private final TransactionService transactionService;
 
-    public TransactionResource(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
