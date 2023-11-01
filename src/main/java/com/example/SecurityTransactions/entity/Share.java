@@ -1,12 +1,13 @@
 package com.example.SecurityTransactions.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Share {
+public class Share implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,8 +36,8 @@ public class Share {
     @Column(name = "economic_field", nullable = false)
     private String economicField;
 
-    @JsonManagedReference("share")
-    @OneToMany(mappedBy = "share", fetch = FetchType.EAGER)
+@JsonManagedReference("share")
+    @OneToMany(mappedBy = "share", fetch = FetchType.LAZY)
     private List<Transaction> stockTransactions = new ArrayList<>();
 
 }

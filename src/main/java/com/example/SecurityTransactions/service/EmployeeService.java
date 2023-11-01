@@ -5,7 +5,7 @@ import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 @Transactional
 public class EmployeeService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     private final EmployeeRepository employeeRepository;
 
@@ -27,10 +27,10 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee addEmployee(Employee employee) {
-        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        return employeeRepository.save(employee);
-    }
+//    public Employee addEmployee(Employee employee) {
+//        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+//        return employeeRepository.save(employee);
+//    }
 
     public Employee findEmployeeById(Long id){
         return employeeRepository.findEmployeeById(id)

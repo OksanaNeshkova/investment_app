@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
@@ -20,7 +20,9 @@ public class TransactionController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Transaction>> getAllTransactions() {
+        System.out.println("GET request received for /transaction/all");
         List<Transaction> transactions = transactionService.findAllTransactions();
+        System.out.println("Response sent successfully");
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 

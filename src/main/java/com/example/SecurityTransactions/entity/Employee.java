@@ -1,6 +1,6 @@
 package com.example.SecurityTransactions.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+
+public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,8 +49,8 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonManagedReference("employee")
-    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+@JsonManagedReference("employee")
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     List<Transaction> transaction = new ArrayList<>();
 
 
