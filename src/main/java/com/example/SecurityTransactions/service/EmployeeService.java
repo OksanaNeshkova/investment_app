@@ -1,6 +1,7 @@
 package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -43,5 +45,14 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    public Employee findEByTransactionId (Long transId){
+        List<Employee>employees = employeeRepository.findAll();
+        Optional<Employee> optionalEmployee = employees.stream()
+                .filter(emp -> emp.getTransaction().stream()
+                        .anyMatch(transaction -> transaction.getId().equals(transId)))
+                .findFirst();
+        return optionalEmployee.orElse(null);
     }
 }

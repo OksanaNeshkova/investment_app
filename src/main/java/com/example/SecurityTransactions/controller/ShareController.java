@@ -1,7 +1,10 @@
 package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Share;
+import com.example.SecurityTransactions.entity.Transaction;
 import com.example.SecurityTransactions.service.ShareService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +32,12 @@ public class ShareController {
     public Share updateShare(@RequestBody Share theShare) {
         Share updatedShare = shareService.updateShare(theShare);
         return updatedShare;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Share> getShareByTransactionId(@PathVariable("id") Long id) {
+        Share foundShare = shareService.findByTransactionId(id);
+        return new ResponseEntity<>(foundShare, HttpStatus.OK);
     }
 
 }

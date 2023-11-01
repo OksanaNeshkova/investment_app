@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,5 +31,12 @@ public class ShareService {
         return shareRepository.save(share);
     }
 
-
+    public Share findByTransactionId (Long transactionId){
+        List<Share>shares = shareRepository.findAll();
+        Optional<Share> optionalShare = shares.stream()
+                .filter(share -> share.getStockTransactions().stream()
+                        .anyMatch(transaction -> transaction.getId().equals(transactionId)))
+                .findFirst();
+        return optionalShare.orElse(null);
+    }
 }

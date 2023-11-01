@@ -1,6 +1,7 @@
 package com.example.SecurityTransactions.controller;
 
 
+import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.Transaction;
 import com.example.SecurityTransactions.service.TransactionService;
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,4 @@ public class TransactionController {
         transactionService.deleteTransaction(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

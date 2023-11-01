@@ -1,6 +1,7 @@
 package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -50,5 +51,11 @@ public class EmployeeController {
     public ResponseEntity<?> deleteEmployee(@PathVariable("id")Long id){
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/findEmp/{id}")
+    public ResponseEntity<Employee> getEmployeeByTransactionId(@PathVariable("id") Long id) {
+        Employee foundEmployee = employeeService.findEByTransactionId(id);
+        return new ResponseEntity<>(foundEmployee, HttpStatus.OK);
     }
 }
