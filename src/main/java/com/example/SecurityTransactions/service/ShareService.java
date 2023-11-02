@@ -1,13 +1,16 @@
 package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Share;
+import com.example.SecurityTransactions.entity.ShareBalance;
+import com.example.SecurityTransactions.entity.Transaction;
+import com.example.SecurityTransactions.entity.TransactionType;
 import com.example.SecurityTransactions.repo.ShareRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 @Service
 @Transactional
@@ -39,4 +42,24 @@ public class ShareService {
                 .findFirst();
         return optionalShare.orElse(null);
     }
+
+    public List< ShareBalance> getCurrentBalance (){
+        List< ShareBalance> balance = new ArrayList<>();
+        List<Share> allShares = shareRepository.findAll();
+        for (int i = 0; i < allShares.size(); i++) {
+            long initialBalance = 0;
+            List<Transaction> transactions= allShares.get(i).getStockTransactions();
+            for (int j = 0; j < transactions.size(); j++) {
+                if (transactions.get(j).getType() == TransactionType.PURCHASE) {
+                    initialBalance += transactions.get(j).getVolume();
+                } else {
+                    initialBalance -= transactions.get(j).getVolume();
+                }
+            }
+            balance.add(new ShareBalance(allShares.get(i).getIsin(),allShares.get(i).getShareName(),initialBalance));
+        }
+
+        return balance;
+    }
+
 }

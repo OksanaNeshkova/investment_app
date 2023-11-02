@@ -39,24 +39,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-//    public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
-//        if (transaction.getType() == TransactionType.SALE) {
-//            long amount = shareBalance(secId);
-//            if (amount < transaction.getVolume()) {
-//                throw new ShortSellingNotAllowedException("Insufficient amount of shares, please check your portfolio balance");
-//            }
-//        }
-//        Employee emp = employeeRepository.findById(empId).get();
-//        transaction.setEmployee(emp);
-//        Share share = shareRepository.findById(secId).get();
-//        transaction.setShare(share);
-//        emp.getTransaction().add(transaction);
-//        share.getStockTransactions().add(transaction);
-//        return transactionRepository.save(transaction);
-//    }
-
     public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
-
         if (transaction.getType() == TransactionType.SALE) {
             long amount = shareBalance(secId);
             if (amount < transaction.getVolume()) {
@@ -69,23 +52,10 @@ public class TransactionService {
         transaction.setShare(share);
         emp.getTransaction().add(transaction);
         share.getStockTransactions().add(transaction);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                System.out.println(userDetails.getUsername());
-                System.out.println(userDetails.getAuthorities());
-            } else {
-                System.out.println("Principal is not an instance of UserDetails, handle accordingly");
-            }
-        } else {
-            System.out.println("User is not authenticated, handle accordingly");
-        }
         return transactionRepository.save(transaction);
     }
+
+
 
     public long shareBalance(Long secId) {
         long shareBalance = 0;
@@ -99,6 +69,7 @@ public class TransactionService {
         }
         return shareBalance;
     }
+
 
     public Transaction updateTransaction(Transaction transaction) {
         Share share = findTransactionById(transaction.getId()).getShare();
