@@ -1,9 +1,6 @@
 package com.example.SecurityTransactions.service;
 
-import com.example.SecurityTransactions.entity.Employee;
-import com.example.SecurityTransactions.entity.Share;
-import com.example.SecurityTransactions.entity.Transaction;
-import com.example.SecurityTransactions.entity.TransactionType;
+import com.example.SecurityTransactions.entity.*;
 import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
 import com.example.SecurityTransactions.exception.TransactionNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
@@ -11,8 +8,15 @@ import com.example.SecurityTransactions.repo.ShareRepository;
 import com.example.SecurityTransactions.repo.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -31,10 +35,28 @@ public class TransactionService {
     }
 
     public List<Transaction> findAllTransactions() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return transactionRepository.findAll();
     }
 
+//    public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
+//        if (transaction.getType() == TransactionType.SALE) {
+//            long amount = shareBalance(secId);
+//            if (amount < transaction.getVolume()) {
+//                throw new ShortSellingNotAllowedException("Insufficient amount of shares, please check your portfolio balance");
+//            }
+//        }
+//        Employee emp = employeeRepository.findById(empId).get();
+//        transaction.setEmployee(emp);
+//        Share share = shareRepository.findById(secId).get();
+//        transaction.setShare(share);
+//        emp.getTransaction().add(transaction);
+//        share.getStockTransactions().add(transaction);
+//        return transactionRepository.save(transaction);
+//    }
+
     public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
+
         if (transaction.getType() == TransactionType.SALE) {
             long amount = shareBalance(secId);
             if (amount < transaction.getVolume()) {
@@ -47,6 +69,21 @@ public class TransactionService {
         transaction.setShare(share);
         emp.getTransaction().add(transaction);
         share.getStockTransactions().add(transaction);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                System.out.println(userDetails.getUsername());
+                System.out.println(userDetails.getAuthorities());
+            } else {
+                System.out.println("Principal is not an instance of UserDetails, handle accordingly");
+            }
+        } else {
+            System.out.println("User is not authenticated, handle accordingly");
+        }
         return transactionRepository.save(transaction);
     }
 

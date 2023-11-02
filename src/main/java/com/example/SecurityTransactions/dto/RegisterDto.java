@@ -14,7 +14,7 @@ public class RegisterDto {
     private long personalCode;
     private String address;
     private String phone;
-    Role role;
+    private Role role;
 
 
 }
