@@ -6,6 +6,7 @@ import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 
 
@@ -55,16 +57,6 @@ public class AuthController {
         return new ResponseEntity<>("New employee registered successfully", HttpStatus.OK);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-//        System.out.println(loginDto.getEmail());
-//        System.out.println(loginDto.getPassword());
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        System.out.println("Response sent successfully");
-//        return new ResponseEntity<>("Signed success!",HttpStatus.OK);
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
         System.out.println(loginDto.getEmail());
@@ -78,5 +70,8 @@ public class AuthController {
         System.out.println("Response sent successfully");
         return new ResponseEntity<>(jwtToken,HttpStatus.OK);
     }
+
+
+
 
 }
