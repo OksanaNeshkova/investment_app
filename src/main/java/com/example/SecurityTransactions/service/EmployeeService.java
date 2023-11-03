@@ -1,7 +1,6 @@
 package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
-import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
@@ -21,8 +20,9 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Employee> findAllEmployees() {

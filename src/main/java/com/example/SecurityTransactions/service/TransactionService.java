@@ -39,22 +39,6 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-//    public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
-//        if (transaction.getType() == TransactionType.SALE) {
-//            long amount = shareBalance(secId);
-//            if (amount < transaction.getVolume()) {
-//                throw new ShortSellingNotAllowedException("Insufficient amount of shares, please check your portfolio balance");
-//            }
-//        }
-//        Employee emp = employeeRepository.findById(empId).get();
-//        transaction.setEmployee(emp);
-//        Share share = shareRepository.findById(secId).get();
-//        transaction.setShare(share);
-//        emp.getTransaction().add(transaction);
-//        share.getStockTransactions().add(transaction);
-//        return transactionRepository.save(transaction);
-//    }
-
     public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
 
         if (transaction.getType() == TransactionType.SALE) {
