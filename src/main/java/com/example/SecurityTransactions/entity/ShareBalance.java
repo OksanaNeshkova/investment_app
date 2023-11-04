@@ -13,4 +13,6 @@ public class ShareBalance {
     private long balance;
 
     private String currency;
+
+    private float bookPrice;
 }
