@@ -1,6 +1,7 @@
 package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.exception.BadRequestException;
 import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
