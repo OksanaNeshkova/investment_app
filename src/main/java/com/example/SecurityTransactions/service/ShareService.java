@@ -43,6 +43,20 @@ public class ShareService {
         return optionalShare.orElse(null);
     }
 
+    public float getBookPrice (Share share){
+        float totalValue = 0;
+        int totalVolume = 0;
+        List<Transaction> allTransactions =share.getStockTransactions();
+        for (Transaction transaction:allTransactions) {
+            if (transaction.getType()==TransactionType.PURCHASE){
+                totalValue+=transaction.getPrice()*transaction.getVolume();
+                totalVolume +=transaction.getVolume();
+            }
+        }
+        float averageBookPrice = totalValue/totalVolume;
+        return averageBookPrice;
+    }
+
     public List< ShareBalance> getCurrentBalance (){
         List< ShareBalance> balance = new ArrayList<>();
         List<Share> allShares = shareRepository.findAll();
@@ -56,7 +70,7 @@ public class ShareService {
                     initialBalance -= transactions.get(j).getVolume();
                 }
             }
-            balance.add(new ShareBalance(allShares.get(i).getSymbol(),allShares.get(i).getShareName(),initialBalance,allShares.get(i).getCurrency()));
+            balance.add(new ShareBalance(allShares.get(i).getSymbol(),allShares.get(i).getShareName(),initialBalance,allShares.get(i).getCurrency(),getBookPrice(allShares.get(i))));
         }
 
         return balance;
