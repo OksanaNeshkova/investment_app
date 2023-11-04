@@ -15,8 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -35,20 +33,19 @@ public class TransactionService {
     }
 
     public List<Transaction> findAllTransactions() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return transactionRepository.findAll();
     }
 
-    public Transaction addTransaction(Transaction transaction, Long empId, Long secId) {
+    public Transaction addTransaction(Transaction transaction, Long empId, String symbol) {
         if (transaction.getType() == TransactionType.SALE) {
-            long amount = shareBalance(secId);
+            long amount = shareBalance(symbol);
             if (amount < transaction.getVolume()) {
                 throw new ShortSellingNotAllowedException("Insufficient amount of shares, please check your portfolio balance");
             }
         }
         Employee emp = employeeRepository.findById(empId).get();
         transaction.setEmployee(emp);
-        Share share = shareRepository.findById(secId).get();
+        Share share = shareRepository.findBySymbol(symbol).get();
         transaction.setShare(share);
         emp.getTransaction().add(transaction);
         share.getStockTransactions().add(transaction);
@@ -57,9 +54,9 @@ public class TransactionService {
 
 
 
-    public long shareBalance(Long secId) {
+    public long shareBalance(String symbol) {
         long shareBalance = 0;
-        List<Transaction> transactions = shareRepository.findById(secId).get().getStockTransactions();
+        List<Transaction> transactions = shareRepository.findBySymbol(symbol).get().getStockTransactions();
         for (int i = 0; i < transactions.size(); i++) {
             if (transactions.get(i).getType() == TransactionType.PURCHASE) {
                 shareBalance += transactions.get(i).getVolume();
@@ -75,7 +72,7 @@ public class TransactionService {
         Share share = findTransactionById(transaction.getId()).getShare();
         Employee employee = findTransactionById(transaction.getId()).getEmployee();
         Transaction foundTransaction = findTransactionById(transaction.getId());
-        long currentBalance = shareBalance(share.getId());
+        long currentBalance = shareBalance(share.getSymbol());
         if (foundTransaction.getType() == TransactionType.PURCHASE && transaction.getType() == TransactionType.PURCHASE) {
             currentBalance = currentBalance + (transaction.getVolume() - foundTransaction.getVolume());
         } else if (foundTransaction.getType() == TransactionType.PURCHASE && transaction.getType() == TransactionType.SALE) {
@@ -100,7 +97,7 @@ public class TransactionService {
     public void deleteTransaction(Long transactionId) {
         Transaction foundTransaction = findTransactionById(transactionId);
         if (foundTransaction.getType() == TransactionType.PURCHASE) {
-            long currentBalance = shareBalance(foundTransaction.getShare().getId()) - foundTransaction.getVolume();
+            long currentBalance = shareBalance(foundTransaction.getShare().getSymbol()) - foundTransaction.getVolume();
             if (currentBalance < 0) {
                 throw new ShortSellingNotAllowedException("Deleting the current transaction will result in Short-selling");
             }
