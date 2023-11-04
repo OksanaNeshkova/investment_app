@@ -29,12 +29,15 @@ public class Share implements Serializable{
 
     @Column(name = "share_name", nullable = false)
     private String shareName;
-    @Column(name = "ISIN", nullable = false)
-    private String isin;
+    @Column(name = "symbol", nullable = false)
+    private String symbol;
     @Column(name = "country", nullable = false)
     private String country;
     @Column(name = "economic_field", nullable = false)
     private String economicField;
+
+    @Column(name = "currency", nullable = false)
+    private String currency;
 
 @JsonManagedReference("share")
     @OneToMany(mappedBy = "share", fetch = FetchType.LAZY)

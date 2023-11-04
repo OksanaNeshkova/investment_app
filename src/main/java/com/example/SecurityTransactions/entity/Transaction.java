@@ -40,8 +40,6 @@ public class Transaction implements Serializable{
 
     @Column(name = "fx", nullable = false)
     private float fx;
-    @Column(name = "currency", nullable = false)
-    private String currency;
 
     @Column(name = "trade_date")
     @JsonFormat(pattern = "yyyy-MM-dd")

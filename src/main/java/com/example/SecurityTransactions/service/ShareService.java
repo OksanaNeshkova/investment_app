@@ -56,7 +56,7 @@ public class ShareService {
                     initialBalance -= transactions.get(j).getVolume();
                 }
             }
-            balance.add(new ShareBalance(allShares.get(i).getIsin(),allShares.get(i).getShareName(),initialBalance));
+            balance.add(new ShareBalance(allShares.get(i).getSymbol(),allShares.get(i).getShareName(),initialBalance,allShares.get(i).getCurrency()));
         }
 
         return balance;

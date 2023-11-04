@@ -28,7 +28,7 @@ public class TransactionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction, @RequestParam Long empId, @RequestParam Long secId) {
+    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction, @RequestParam Long empId, @RequestParam String secId) {
         Transaction addedTransaction = transactionService.addTransaction(transaction, empId, secId);
         return new ResponseEntity<>(addedTransaction, HttpStatus.CREATED);
     }

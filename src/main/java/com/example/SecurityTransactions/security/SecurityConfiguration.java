@@ -29,7 +29,8 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/register**").hasRole("ADMIN")
+
+//                .requestMatchers("/register**").hasRole("ADMIN")
                 .requestMatchers("/login").permitAll()
                 .anyRequest()
                 .authenticated()
