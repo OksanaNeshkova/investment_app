@@ -23,7 +23,7 @@ import java.util.List;
 public class Employee implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -35,7 +35,7 @@ public class Employee implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "personal_code", nullable = false)
+    @Column(name = "personal_code", nullable = false,unique = true)
     private long personalCode;
 
     @Email
