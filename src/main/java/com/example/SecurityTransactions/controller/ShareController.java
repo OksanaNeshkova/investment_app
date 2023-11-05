@@ -2,14 +2,12 @@ package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.ShareBalance;
-import com.example.SecurityTransactions.entity.Transaction;
 import com.example.SecurityTransactions.service.ShareService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/share")
@@ -21,7 +19,7 @@ public class ShareController {
     }
 
     @GetMapping("/balance")
-    public List<ShareBalance> getBalaces() {
+    public List<ShareBalance> getBalances() {
         return shareService.getCurrentBalance();
     }
 

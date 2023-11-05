@@ -49,9 +49,11 @@ public class Employee implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-@JsonManagedReference("employee")
+    @JsonManagedReference("employee")
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     List<Transaction> transaction = new ArrayList<>();
 
-
+    public Employee(String email) {
+        this.email = email;
+    }
 }

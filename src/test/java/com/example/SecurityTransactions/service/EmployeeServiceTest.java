@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 class EmployeeServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
-
     @Mock
     private PasswordEncoder passwordEncoder;
     @InjectMocks
@@ -35,7 +34,7 @@ class EmployeeServiceTest {
 
     @BeforeEach
     void setup(){
-        MockitoAnnotations.openMocks(this);
+        underTest = new EmployeeService(employeeRepository, passwordEncoder);
     }
 
     @Test
@@ -111,7 +110,7 @@ class EmployeeServiceTest {
 //    }
 
 //    @Test
-//    void willThrowExceptionWhenDeleteEmployeeNotFound(){
+//    void /{
 //        //Given
 //        long id = 10;
 //        Employee employee = new Employee();

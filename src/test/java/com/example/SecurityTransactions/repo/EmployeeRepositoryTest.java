@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class EmployeeRepositoryTest {
 
     @Autowired
