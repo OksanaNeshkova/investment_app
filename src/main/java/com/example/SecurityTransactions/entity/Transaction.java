@@ -28,7 +28,7 @@ public class Transaction implements Serializable{
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "stock_id")
+    @JoinColumn(name = "share_id")
     @JsonBackReference("share")
     private Share share;
 

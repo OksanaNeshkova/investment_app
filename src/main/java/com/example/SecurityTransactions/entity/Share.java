@@ -29,7 +29,7 @@ public class Share implements Serializable{
 
     @Column(name = "share_name", nullable = false)
     private String shareName;
-    @Column(name = "symbol", nullable = false)
+    @Column(name = "symbol", nullable = false,unique = true)
     private String symbol;
     @Column(name = "country", nullable = false)
     private String country;
