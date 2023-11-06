@@ -1,29 +1,20 @@
 package com.example.SecurityTransactions.service;
 
-import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Share;
-import com.example.SecurityTransactions.repo.EmployeeRepository;
 import com.example.SecurityTransactions.repo.ShareRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.ArrayList;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+
 @ExtendWith(MockitoExtension.class)
 class ShareServiceTest {
 
@@ -33,9 +24,10 @@ class ShareServiceTest {
     private ShareService underTest;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         underTest = new ShareService(shareRepository);
     }
+
     @Test
     void findAllShare() {
         underTest.findAllShare();
@@ -53,22 +45,5 @@ class ShareServiceTest {
         Share capturedShare = shareArgumentCaptor.getValue();
 
         assertThat(capturedShare).isEqualTo(testShare);
-    }
-
-    @Test
-    void updateShare() {
-
-    }
-
-    @Test
-    void findByTransactionId() {
-    }
-
-    @Test
-    void getBookPrice() {
-    }
-
-    @Test
-    void getCurrentBalance() {
     }
 }

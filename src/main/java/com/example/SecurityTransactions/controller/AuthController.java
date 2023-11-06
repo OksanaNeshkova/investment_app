@@ -39,9 +39,10 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwtToken = Jwts.builder()
-                        .setSubject(loginDto.getEmail())
-                                .signWith(SignatureAlgorithm.HS512,secretKey)
-                                        .compact();
+                .setSubject(loginDto.getEmail())
+                .signWith(SignatureAlgorithm.HS512,secretKey)
+                .compact();
+        System.out.println("here i am");
         return new ResponseEntity<>(jwtToken,HttpStatus.OK);
     }
 

@@ -1,8 +1,6 @@
 package com.example.SecurityTransactions.repo;
 
-import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Share;
-import jakarta.persistence.Column;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,21 +13,25 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @DataJpaTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class ShareRepositoryTest {
     @Autowired
     private ShareRepository shareRepository;
+
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         shareRepository.deleteAll();
     }
+
     @Test
     public void canFindBySymbol() {
         //Given
-        Share testShare = new Share(1L,"CompanyName",
+        Share testShare = new Share(1L, "CompanyName",
                 "ShareName", "AAPL", "US",
                 "Technology", "USD", new ArrayList<>());
         shareRepository.save(testShare);
