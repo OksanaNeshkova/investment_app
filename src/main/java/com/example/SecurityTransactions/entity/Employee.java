@@ -53,7 +53,5 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     List<Transaction> transaction = new ArrayList<>();
 
-    public Employee(String email) {
-        this.email = email;
-    }
+
 }

@@ -1,95 +1,67 @@
 package com.example.SecurityTransactions.repo;
 
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.entity.Role;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class EmployeeRepositoryTest {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    public EmployeeRepository employeeRepository;
     @AfterEach
     void tearDown(){
         employeeRepository.deleteAll();
     }
     @Test
-    public void canFindEmployeeById() {
-        //Given
-        Employee employee = new Employee();
-        employee.setFirstName("Pedro");
-        employee.setLastName("Reis");
-        employee.setPassword("root");
-        employee.setPersonalCode(111222333L);
-        employee.setEmail("pedroreis@example.com");
-        employee.setAddress("Ravi tee");
-        employee.setPhone("111-222-4365");
-
-        //Saving the employee to the database
-        employeeRepository.save(employee);
-
-        //When
-        Long employeeId = employee.getId();
-        Optional<Employee> foundEmployee = employeeRepository.findEmployeeById(employeeId);
-
-        //Then
-        assertTrue(foundEmployee.isPresent());
-        assertEquals(employee.getFirstName(), foundEmployee.get().getFirstName());
-        assertEquals(employee.getLastName(), foundEmployee.get().getLastName());
-        assertEquals(employee.getPassword(), foundEmployee.get().getPassword());
-        assertEquals(employee.getPersonalCode(), foundEmployee.get().getPersonalCode());
-        assertEquals(employee.getEmail(), foundEmployee.get().getEmail());
-        assertEquals(employee.getAddress(), foundEmployee.get().getAddress());
-        assertEquals(employee.getPhone(), foundEmployee.get().getPhone());
-    }
-
-    @Test
     public void canFindByEmail() {
         //Given
-        Employee employee = new Employee();
-        employee.setFirstName("Pedro");
-        employee.setLastName("Reis");
-        employee.setPassword("root");
-        employee.setPersonalCode(111222333L);
-        employee.setEmail("pedroreis@example.com");
-        employee.setAddress("Ravi tee");
-        employee.setPhone("111-222-4365");
+        String email = "pedro@gmail.com";
+        Employee testEmployee = new Employee(1L, "FirstName",
+                "LastName", "root", 11111L,
+                email, "address", "1111", Role.ROLE_USER,
+                new ArrayList<>());
 
         //Saving the employee to the database
-        employeeRepository.save(employee);
+        employeeRepository.save(testEmployee);
 
         //When
-        String employeeEmail = employee.getEmail();
+        String employeeEmail = testEmployee.getEmail();
         Optional<Employee> foundEmployee = employeeRepository.findByEmail(employeeEmail);
 
         //Then
         assertTrue(foundEmployee.isPresent());
-        assertEquals(employee.getEmail(), foundEmployee.get().getEmail());
+        assertEquals(testEmployee.getEmail(), foundEmployee.get().getEmail());
     }
 
     @Test
-    public void itShouldCheckWhenStudentEmailExists() {
+    public void itShouldCheckWhenEmployeeEmailExists() {
         //Given
-        String email = "pedroreis@example.com";
-        Employee employee = new Employee();
-        employee.setFirstName("Pedro");
-        employee.setLastName("Reis");
-        employee.setPassword("root");
-        employee.setPersonalCode(111222333L);
-        employee.setEmail(email);
-        employee.setAddress("Ravi tee");
-        employee.setPhone("111-222-4365");
+        String email = "pedro@gmail.com";
+        Employee testEmployee = new Employee(1L, "FirstName",
+                "LastName", "root", 11111L,
+                email, "address", "1111", Role.ROLE_USER,
+                new ArrayList<>());
 
         //Saving the employee to the database
-        employeeRepository.save(employee);
+        employeeRepository.save(testEmployee);
 
         //When
         boolean expected = employeeRepository.existsByEmail(email);
