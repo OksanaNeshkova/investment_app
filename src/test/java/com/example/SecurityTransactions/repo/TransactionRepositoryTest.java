@@ -27,7 +27,7 @@ public class TransactionRepositoryTest {
     private ShareRepository shareRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
-    private
+
 
     @AfterEach
     void tearDown (){
