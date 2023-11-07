@@ -38,11 +38,14 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String role = employeeRepository.findByEmail(loginDto.getEmail()).get().getRole().toString();
+
         String jwtToken = Jwts.builder()
                 .setSubject(loginDto.getEmail())
+                .claim("role",role)
                 .signWith(SignatureAlgorithm.HS512,secretKey)
                 .compact();
-        System.out.println("here i am");
         return new ResponseEntity<>(jwtToken,HttpStatus.OK);
     }
 

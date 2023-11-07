@@ -29,15 +29,12 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-
-//                .requestMatchers("/register**").hasRole("ADMIN")
+                .requestMatchers("/employee/all").hasRole("ADMIN")
                 .requestMatchers("/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//                .and()
-//                .httpBasic();
         return http.build();
     }
 
