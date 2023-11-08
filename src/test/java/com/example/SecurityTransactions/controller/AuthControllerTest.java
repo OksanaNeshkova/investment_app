@@ -2,6 +2,7 @@ package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.dto.LoginDto;
 import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.entity.Role;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
-
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest
 public class AuthControllerTest {
 
@@ -58,6 +61,7 @@ public class AuthControllerTest {
         Employee testEmployee = new Employee();
         testEmployee.setEmail("test@example.com");
         testEmployee.setPassword("password");
+        testEmployee.setRole(Role.ROLE_USER);
         when(employeeRepository.findByEmail(loginDto.getEmail())).thenReturn(Optional.of(testEmployee));
         when(authenticationManager.authenticate(any())).thenReturn(null);
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
