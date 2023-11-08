@@ -2,6 +2,7 @@ package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Role;
+import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +13,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
@@ -62,6 +67,60 @@ class EmployeeServiceTest {
         //Then
         assertThat(capturedEmployee).isEqualTo(employee);
         assertThat(capturedEmployee.getPassword()).isEqualTo("encodedPassword");
+    }
+
+    @Test
+    void EmployeeService_UpdateEmployee(){
+        //Given
+        Employee testEmployee = Employee.builder()
+                .id(1L)
+                .firstName("FirstName")
+                .lastName("LastName")
+                .password("root")
+                .personalCode(11111L)
+                .email("example@example1.com")
+                .address("address")
+                .phone("1111")
+                .role(Role.ROLE_USER)
+                .transaction(new ArrayList<>())
+                .build();
+
+        // Mock the save method of the employee repository
+        when(employeeRepository.save(testEmployee)).thenReturn(testEmployee);
+
+        // When
+        Employee result = underTest.updateEmployee(testEmployee);
+
+        // Then
+        verify(employeeRepository, times(1)).save(testEmployee);
+        assertEquals(testEmployee, result);
+    }
+
+    @Test
+    void canDeleteEmployee(){
+        //Given
+        Long id = 10L;
+        Employee testEmployee = Employee.builder()
+                .id(id)
+                .firstName("FirstName")
+                .lastName("LastName")
+                .password("root")
+                .personalCode(11111L)
+                .email("example@example1.com")
+                .address("address")
+                .phone("1111")
+                .role(Role.ROLE_USER)
+                .transaction(new ArrayList<>())
+                .build();
+
+        //Saving the employee to the database
+        employeeRepository.save(testEmployee);
+
+        //When
+        underTest.deleteEmployee(id);
+
+        // Then
+        verify(employeeRepository).deleteById(id);
     }
 
 }
