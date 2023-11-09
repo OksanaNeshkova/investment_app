@@ -1,3 +1,4 @@
+--Password login will be root for both users.
 INSERT INTO employee (id,address, email, first_name, last_name, password, personal_code, phone_number, role)
 VALUES
 (1,'example address', 'sam.simson@gmail.com', 'Samantha', 'Simpson', '$2a$10$EBqP6XZ6i0djqpUFY3HzEuvCAIO4pf7HUYwBNjQzaaaKdopmZeJxu', 47012120222, '+372588888', 'ROLE_USER'),

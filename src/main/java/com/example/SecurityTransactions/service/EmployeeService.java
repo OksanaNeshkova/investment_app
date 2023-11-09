@@ -41,6 +41,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee) {
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeRepository.save(employee);
     }
 

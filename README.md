@@ -7,11 +7,16 @@ This web application is designed for a company that manages employees buying sto
 
 ## General Guidelines
 The application is built using the following technologies and practices:
-- Spring Framework
+- Spring Boot
+- Spring Security
+- Entity / DTO (Data transfer object)
 - Lombok
 - Spring Test
 - JPA (Hibernate)
 - Spring Security for access control
+- REST API
+- HTML, CSS, TypeScript, Bootstrap
+
 
 ## Functionalities
 
