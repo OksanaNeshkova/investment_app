@@ -2,7 +2,6 @@ package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Role;
-import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,7 +68,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void EmployeeService_UpdateEmployee(){
+    void EmployeeService_UpdateEmployee() {
         //Given
         Employee testEmployee = Employee.builder()
                 .id(1L)
@@ -88,6 +86,10 @@ class EmployeeServiceTest {
         // Mock the save method of the employee repository
         when(employeeRepository.save(testEmployee)).thenReturn(testEmployee);
         when(employeeRepository.findEmployeeById(testEmployee.getId())).thenReturn(Optional.of(testEmployee));
+<<<<<<< HEAD
+
+=======
+>>>>>>> 4dace59543799560d919570cce2da9e3349bc553
         // When
         Employee result = underTest.updateEmployee(testEmployee);
 
@@ -97,7 +99,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void canDeleteEmployee(){
+    void canDeleteEmployee() {
         //Given
         Long id = 10L;
         Employee testEmployee = Employee.builder()

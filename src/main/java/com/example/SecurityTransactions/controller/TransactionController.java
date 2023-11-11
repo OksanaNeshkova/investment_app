@@ -1,7 +1,6 @@
 package com.example.SecurityTransactions.controller;
 
 
-import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.Transaction;
 import com.example.SecurityTransactions.exception.DuplicateEntryException;
 import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/transaction")

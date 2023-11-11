@@ -1,8 +1,8 @@
 package com.example.SecurityTransactions.exception;
 
-public class DuplicateEntryException extends RuntimeException{
+public class DuplicateEntryException extends RuntimeException {
 
-   public DuplicateEntryException(String msg){
-        super (msg);
+    public DuplicateEntryException(String msg) {
+        super(msg);
     }
 }

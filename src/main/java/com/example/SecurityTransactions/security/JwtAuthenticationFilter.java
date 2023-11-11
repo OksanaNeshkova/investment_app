@@ -19,6 +19,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
     @Value("${jwt.secret-key}")
     private String secretKey;
+
     public JwtAuthenticationFilter(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }

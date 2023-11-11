@@ -1,6 +1,6 @@
 package com.example.SecurityTransactions.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ public class Employee implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "personal_code", nullable = false,unique = true)
+    @Column(name = "personal_code", nullable = false, unique = true)
     private long personalCode;
 
     @Email

@@ -1,6 +1,9 @@
 package com.example.SecurityTransactions.service;
 
-import com.example.SecurityTransactions.entity.*;
+import com.example.SecurityTransactions.entity.Employee;
+import com.example.SecurityTransactions.entity.Share;
+import com.example.SecurityTransactions.entity.Transaction;
+import com.example.SecurityTransactions.entity.TransactionType;
 import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
 import com.example.SecurityTransactions.exception.TransactionNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
@@ -8,11 +11,6 @@ import com.example.SecurityTransactions.repo.ShareRepository;
 import com.example.SecurityTransactions.repo.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +49,6 @@ public class TransactionService {
         share.getStockTransactions().add(transaction);
         return transactionRepository.save(transaction);
     }
-
 
 
     public long shareBalance(String symbol) {
