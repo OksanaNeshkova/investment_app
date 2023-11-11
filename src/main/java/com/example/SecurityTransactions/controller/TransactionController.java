@@ -3,6 +3,8 @@ package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.Transaction;
+import com.example.SecurityTransactions.exception.DuplicateEntryException;
+import com.example.SecurityTransactions.exception.ShortSellingNotAllowedException;
 import com.example.SecurityTransactions.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +28,23 @@ public class TransactionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction, @RequestParam Long empId, @RequestParam String secId) {
-        Transaction addedTransaction = transactionService.addTransaction(transaction, empId, secId);
-        return new ResponseEntity<>(addedTransaction, HttpStatus.CREATED);
+    public ResponseEntity<?> addTransaction(@RequestBody Transaction transaction, @RequestParam Long empId, @RequestParam String secId) {
+        try {
+            Transaction addedTransaction = transactionService.addTransaction(transaction, empId, secId);
+            return new ResponseEntity<>(addedTransaction, HttpStatus.CREATED);
+        } catch (ShortSellingNotAllowedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction transaction) {
-        Transaction updatedTransaction = transactionService.updateTransaction(transaction);
-        return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
+    public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction) {
+        try{
+            Transaction updatedTransaction = transactionService.updateTransaction(transaction);
+            return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
+        }catch (ShortSellingNotAllowedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/find/{id}")
@@ -45,7 +55,11 @@ public class TransactionController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTransactionById(@PathVariable("id") Long id) {
-        transactionService.deleteTransaction(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            transactionService.deleteTransaction(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ShortSellingNotAllowedException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 }
