@@ -2,6 +2,7 @@ package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.entity.Share;
+import com.example.SecurityTransactions.exception.DuplicateEntryException;
 import com.example.SecurityTransactions.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -28,12 +29,16 @@ public class EmployeeController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
-        Employee newEmployee = employeeService.addEmployee(employee);
-        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+    public ResponseEntity<?> addEmployee(@RequestBody Employee employee){
+        try {
+            Employee newEmployee = employeeService.addEmployee(employee);
+            return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+        } catch (DuplicateEntryException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
-
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id")Long id){
@@ -42,9 +47,13 @@ public class EmployeeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee){
+        try{
         Employee updatedEmployee = employeeService.updateEmployee(employee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+    } catch (DuplicateEntryException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
     }
 
     @DeleteMapping("/delete/{id}")

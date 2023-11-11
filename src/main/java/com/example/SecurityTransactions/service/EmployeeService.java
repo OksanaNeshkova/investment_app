@@ -2,6 +2,7 @@ package com.example.SecurityTransactions.service;
 
 import com.example.SecurityTransactions.entity.Employee;
 import com.example.SecurityTransactions.exception.BadRequestException;
+import com.example.SecurityTransactions.exception.DuplicateEntryException;
 import com.example.SecurityTransactions.exception.EmployeeNotFoundException;
 import com.example.SecurityTransactions.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,11 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(Employee employee) {
+        if (employeeRepository.existsByPersonalCode(employee.getPersonalCode())){
+            throw new DuplicateEntryException("Employee with personal code already exists");
+        } else if (employeeRepository.existsByEmail(employee.getEmail())){
+            throw new DuplicateEntryException("Employee with email already exists");
+        }
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeRepository.save(employee);
     }
@@ -41,7 +47,16 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee) {
-        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        String  currentEmail = employeeRepository.findEmployeeById(employee.getId()).get().getEmail();
+        String  currentPassword = employeeRepository.findEmployeeById(employee.getId()).get().getPassword();
+        System.out.println(currentEmail);
+        System.out.println(employee.getPassword());
+      if (!currentEmail.equals(employee.getEmail()) && employeeRepository.existsByEmail(employee.getEmail())){
+            throw new DuplicateEntryException("Employee with email already exists");
+        }
+        if (!currentPassword.equals(employee.getPassword())){
+            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        }
         return employeeRepository.save(employee);
     }
 
