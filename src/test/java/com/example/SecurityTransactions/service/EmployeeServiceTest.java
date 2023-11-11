@@ -86,7 +86,10 @@ class EmployeeServiceTest {
         // Mock the save method of the employee repository
         when(employeeRepository.save(testEmployee)).thenReturn(testEmployee);
         when(employeeRepository.findEmployeeById(testEmployee.getId())).thenReturn(Optional.of(testEmployee));
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4dace59543799560d919570cce2da9e3349bc553
         // When
         Employee result = underTest.updateEmployee(testEmployee);
 

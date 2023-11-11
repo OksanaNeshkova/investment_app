@@ -4,6 +4,7 @@ import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.entity.ShareBalance;
 import com.example.SecurityTransactions.entity.Transaction;
 import com.example.SecurityTransactions.entity.TransactionType;
+import com.example.SecurityTransactions.exception.DuplicateEntryException;
 import com.example.SecurityTransactions.repo.ShareRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,17 @@ public class ShareService {
     }
 
     public Share addShare(Share share) {
+        if (shareRepository.existsBySymbol(share.getSymbol().toUpperCase())) {
+            throw new DuplicateEntryException("Share with symbol already registered");
+        }
         return shareRepository.save(share);
     }
 
     public Share updateShare(Share share) {
+        String currentSymbol = shareRepository.findById(share.getId()).get().getSymbol().toLowerCase();
+        if (!currentSymbol.equals(share.getSymbol().toLowerCase())){
+            throw new DuplicateEntryException("This symbol already exists");
+        }
         return shareRepository.save(share);
     }
 

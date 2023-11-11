@@ -33,7 +33,11 @@ public class EmployeeService {
     public Employee addEmployee(Employee employee) {
         if (employeeRepository.existsByPersonalCode(employee.getPersonalCode())) {
             throw new DuplicateEntryException("Employee with personal code already exists");
+<<<<<<< HEAD
         } else if (employeeRepository.existsByEmail(employee.getEmail())) {
+=======
+        } else if (employeeRepository.existsByEmail(employee.getEmail().toLowerCase())){
+>>>>>>> 4dace59543799560d919570cce2da9e3349bc553
             throw new DuplicateEntryException("Employee with email already exists");
         }
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
@@ -46,11 +50,17 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee) {
+<<<<<<< HEAD
         String currentEmail = employeeRepository.findEmployeeById(employee.getId()).get().getEmail();
         String currentPassword = employeeRepository.findEmployeeById(employee.getId()).get().getPassword();
         System.out.println(currentEmail);
         System.out.println(employee.getPassword());
         if (!currentEmail.equals(employee.getEmail()) && employeeRepository.existsByEmail(employee.getEmail())) {
+=======
+        String  currentEmail = employeeRepository.findEmployeeById(employee.getId()).get().getEmail().toLowerCase();
+        String  currentPassword = employeeRepository.findEmployeeById(employee.getId()).get().getPassword();
+      if (!currentEmail.equals(employee.getEmail().toLowerCase()) && employeeRepository.existsByEmail(employee.getEmail())){
+>>>>>>> 4dace59543799560d919570cce2da9e3349bc553
             throw new DuplicateEntryException("Employee with email already exists");
         }
         if (!currentPassword.equals(employee.getPassword())) {

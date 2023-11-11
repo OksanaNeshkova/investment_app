@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ShareRepository extends JpaRepository<Share, Long> {
 
     Optional<Share> findBySymbol(String symbol);
+
+    Boolean existsBySymbol (String symbol);
 }
