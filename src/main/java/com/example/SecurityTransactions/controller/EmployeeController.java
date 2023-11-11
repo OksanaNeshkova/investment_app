@@ -1,11 +1,9 @@
 package com.example.SecurityTransactions.controller;
 
 import com.example.SecurityTransactions.entity.Employee;
-import com.example.SecurityTransactions.entity.Share;
 import com.example.SecurityTransactions.exception.DuplicateEntryException;
 import com.example.SecurityTransactions.service.EmployeeService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +20,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Employee>>  getAllEmployees() {
+    public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.findAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
         try {
             Employee newEmployee = employeeService.addEmployee(employee);
             return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
@@ -41,23 +39,23 @@ public class EmployeeController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id")Long id){
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
         Employee employee = employeeService.findEmployeeById(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee){
-        try{
-        Employee updatedEmployee = employeeService.updateEmployee(employee);
-        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
-    } catch (DuplicateEntryException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-    }
+    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
+        try {
+            Employee updatedEmployee = employeeService.updateEmployee(employee);
+            return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        } catch (DuplicateEntryException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id")Long id){
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

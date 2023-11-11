@@ -9,7 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -34,8 +36,8 @@ public class ShareService {
         return shareRepository.save(share);
     }
 
-    public Share findByTransactionId (Long transactionId){
-        List<Share>shares = shareRepository.findAll();
+    public Share findByTransactionId(Long transactionId) {
+        List<Share> shares = shareRepository.findAll();
         Optional<Share> optionalShare = shares.stream()
                 .filter(share -> share.getStockTransactions().stream()
                         .anyMatch(transaction -> transaction.getId().equals(transactionId)))
@@ -43,26 +45,26 @@ public class ShareService {
         return optionalShare.orElse(null);
     }
 
-    public float getBookPrice (Share share){
+    public float getBookPrice(Share share) {
         float totalValue = 0;
         int totalVolume = 0;
-        List<Transaction> allTransactions =share.getStockTransactions();
-        for (Transaction transaction:allTransactions) {
-            if (transaction.getType()==TransactionType.PURCHASE){
-                totalValue+=transaction.getPrice()*transaction.getVolume();
-                totalVolume +=transaction.getVolume();
+        List<Transaction> allTransactions = share.getStockTransactions();
+        for (Transaction transaction : allTransactions) {
+            if (transaction.getType() == TransactionType.PURCHASE) {
+                totalValue += transaction.getPrice() * transaction.getVolume();
+                totalVolume += transaction.getVolume();
             }
         }
-        float averageBookPrice = totalValue/totalVolume;
+        float averageBookPrice = totalValue / totalVolume;
         return averageBookPrice;
     }
 
-    public List< ShareBalance> getCurrentBalance (){
-        List< ShareBalance> balance = new ArrayList<>();
+    public List<ShareBalance> getCurrentBalance() {
+        List<ShareBalance> balance = new ArrayList<>();
         List<Share> allShares = shareRepository.findAll();
         for (int i = 0; i < allShares.size(); i++) {
             long initialBalance = 0;
-            List<Transaction> transactions= allShares.get(i).getStockTransactions();
+            List<Transaction> transactions = allShares.get(i).getStockTransactions();
             for (int j = 0; j < transactions.size(); j++) {
                 if (transactions.get(j).getType() == TransactionType.PURCHASE) {
                     initialBalance += transactions.get(j).getVolume();
@@ -70,7 +72,7 @@ public class ShareService {
                     initialBalance -= transactions.get(j).getVolume();
                 }
             }
-            balance.add(new ShareBalance(allShares.get(i).getSymbol(),allShares.get(i).getShareName(),initialBalance,allShares.get(i).getCurrency(),getBookPrice(allShares.get(i))));
+            balance.add(new ShareBalance(allShares.get(i).getSymbol(), allShares.get(i).getShareName(), initialBalance, allShares.get(i).getCurrency(), getBookPrice(allShares.get(i))));
         }
 
         return balance;
